@@ -34,6 +34,8 @@ export const VerifyOtpForm: React.FC = () => {
             title: "Success",
             description: verify.message,
       });
+
+       navigate("/login");
     }else{
              toast({
             title: "Error",
@@ -41,7 +43,6 @@ export const VerifyOtpForm: React.FC = () => {
       });
     }
      
-   
     } catch (err: any) {
       const msg =
         err?.response?.data?.message ||
@@ -62,7 +63,7 @@ export const VerifyOtpForm: React.FC = () => {
     <div className="min-h-screen flex items-center justify-center bg-gradient-light p-4">
       <Card className="w-full max-w-md shadow-xl">
         <CardHeader className="text-center space-y-4">
-          <CardTitle className="text-2xl font-bold text-primary">Verify OTP</CardTitle>
+          <CardTitle className="text-2xl font-bold text-primary">Reset Password</CardTitle>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleVerify} className="space-y-4">
@@ -83,7 +84,6 @@ export const VerifyOtpForm: React.FC = () => {
               />
             </div>
 
-
              <div className="space-y-2">
               <Label htmlFor="Password">Password</Label>
               <Input
@@ -97,12 +97,12 @@ export const VerifyOtpForm: React.FC = () => {
             </div>
 
             <Button type="submit" className="w-full h-11" disabled={loading}>
-              {loading ? "Verifying..." : "Verify OTP"}
+              {loading ? "Verifying..." : "Reset Password"}
             </Button>
 
             <p className="text-sm text-center mt-2">
               Didn’t receive email?{" "}
-              <Link to="/auth/forgot-password" className="text-primary hover:underline">
+              <Link to="/forgot-password" className="text-primary hover:underline">
                 Resend
               </Link>
             </p>

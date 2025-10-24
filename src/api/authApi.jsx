@@ -2,7 +2,7 @@ import axios from "axios";
 
 const api=axios.create({
 
-    baseURL:'http://127.0.0.1:8001/api',
+    baseURL:'http://127.0.0.1:8003/api',
     // baseURL:'https://apiblk.nearbydoctors.in/public/api',
   
      headers: {
@@ -10,7 +10,6 @@ const api=axios.create({
    
         },
 })
-
 
 api.interceptors.request.use(
   (config) => {
@@ -23,9 +22,6 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-
-
-
 api.interceptors.response.use(
   (response) => response,
   (error) => {
@@ -35,7 +31,6 @@ api.interceptors.response.use(
       localStorage.removeItem("access_token");
       localStorage.removeItem("user_details");
 
-    
       window.location.href = "/";
 
     }
@@ -44,14 +39,10 @@ api.interceptors.response.use(
   }
 );
 
-
-
-
 export const login= async (payload)=>{
      const response= await api.post('login',payload);
      return response;
 }
-
 
 export const addProduct = async (formData) => {
   const res = await api.post("/admin/products/add-product", formData, {
@@ -60,7 +51,6 @@ export const addProduct = async (formData) => {
   return res.data;
 };
 
-
 export const sendOtp = async (formData) => {
   const res = await api.post("/forgot-password/send-otp", formData, {
     headers: { "Content-Type": "application/json" },
@@ -68,22 +58,17 @@ export const sendOtp = async (formData) => {
   return res.data;
 };
 
-
 export const verifyOtp = async (email, otp) => {
   const res=await api.post("/forgot-password/verify-otp", { email, otp });
   return res.data;
  
 };
 
-
 export const resetpassword = async (email, otp,password) => {
   const res=await api.post("/forgot-password/reset", { email, otp,password });
   return res.data;
  
 };
-
-
-
 
 export const getProducts = async (params = {}) => {
   try {
@@ -94,7 +79,6 @@ export const getProducts = async (params = {}) => {
     throw error.response?.data || { status: false, message: "Something went wrong" };
   }
 };
-
 
 // ✅ Show single product
 export const getProductById = async (id) => {
@@ -115,7 +99,6 @@ export const deleteProduct = async (id) => {
   const res = await api.delete(`/admin/products/delete-products/${id}`);
   return res.data;
 };
-
 
 // Get variations for product
 export const getVariations = async (productId) => {
@@ -140,7 +123,6 @@ export const deleteVariation = async (id) => {
   const { data } = await api.delete(`admin/product-variation/delete-variation/${id}`);
   return data;
 };
-
 
 // Get all vendors
 export const getVendors = async () => {
@@ -172,7 +154,6 @@ export const deleteVendor = async (id) => {
   return data;
 };
 
-
 export const getStocks = async (variationId) => {
   const { data } = await api.get(`admin/stocks/get-stock/${variationId}`);
   return data;
@@ -196,12 +177,10 @@ export const deleteStock = async (id) => {
   return data;
 };
 
-
 export const getFullProductsTree = async () => {
   const { data } = await api.get("admin/products/full-list");
   return data;
 };
-
 
 export const getEmployees = async (params = {}) => {
   const { page = 1, per_page = 10, search = "" } = params;
@@ -245,9 +224,7 @@ export const getBde = async (params = {}) => {
   return data;
 };
 
-
 // ================= TERRITORIES =================
-
 
 // 🔹 Fetch state & district by pincode
 export const getPincodeDetails = async (pincode) => {
@@ -267,8 +244,6 @@ export const getPincodeDetails = async (pincode) => {
     return null;
   }
 };
-
-
 
 export const getTerritories = async () => {
   const { data } = await api.get("/admin/territories");
@@ -320,7 +295,6 @@ export const deleteBde = async (id) => {
   return data;
 };
 
-
 // ================= SHOPS =================
 // ================= SHOPS =================
 
@@ -357,7 +331,6 @@ export const deleteShop = async (id) => {
   return data;
 };
 
-
 // ================= SHOP VISITS =================
 export const getShopVisits = async (params = {}) => {
   const { page = 1, per_page = 20, search = "" } = params;
@@ -392,10 +365,6 @@ export const deleteShopVisit = async (id) => {
   return data;
 };
 
-
-
-
-
 export const getBdesByTsm = async (tsmid)=>{
   try{
     const {data}=await api.get(`/admin/bdes/get-bdes-by-tsm/${tsmid}`);
@@ -406,7 +375,6 @@ export const getBdesByTsm = async (tsmid)=>{
     return { status: false, message: "Server error fetching BDE list" };
   }
 }
-
 
 // ================== BRAND API ==================
 export const getBrands = async (params = {}) => {
@@ -459,6 +427,5 @@ export const deleteCategory = async (id) => {
   const { data } = await api.delete(`/admin/category/delete/${id}`);
   return data;
 };
-
 
 export default api;

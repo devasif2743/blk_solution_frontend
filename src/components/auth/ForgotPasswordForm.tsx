@@ -7,58 +7,22 @@ import { toast } from "@/hooks/use-toast";
 import { Mail } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { IMAGES } from "../../assets/IMAGES";
 
 import {sendOtp} from '../../api/authApi';
 export const ForgotPasswordForm = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
-
-  const handleSubmit111 = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      // navigate("/verify-otp", { state: { email } });
-      const res=await sendOtp({ email })
-      console.log(res);
-     
-      if(res.status){
-
-          navigate("/verify-otp", { state: { email } });
-
-         toast({
-         
-           title: "Reset link sent",
-           description:res.message ,
-        });
-
-         
-      
-      }else{
-         toast({
-           title: 'Error',
-           description:res.message ,
-             variant: "destructive",
-        });
-      }
-    
-     
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Could not send reset link. Try again.",
-        variant: "destructive",
-      });
-    }
-  };
+  const [loading,setLoading]=useState(false);
 
 const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault();
   console.log("handleSubmit called, email:", email);
-
+ setLoading(true);
   try {
     const res = await sendOtp({ email });
     console.log("sendOtp response:", res);
 
-  
     const ok =
       res?.status === true ||
       res?.status === "true" ||
@@ -73,7 +37,6 @@ const handleSubmit = async (e: React.FormEvent) => {
         description: res.message || "OTP sent.",
       });
 
-     
       console.log("Navigating to verify-otp with email:", email);
       sessionStorage.setItem('reset_session_token', res.token);
       sessionStorage.setItem('reset_email', email);
@@ -82,7 +45,6 @@ const handleSubmit = async (e: React.FormEvent) => {
       return;
     }
 
- 
     toast({
       title: "Error",
       description: res?.message || "Unknown error",
@@ -96,44 +58,58 @@ const handleSubmit = async (e: React.FormEvent) => {
       description: "Could not send reset link. Try again.",
       variant: "destructive",
     });
-  }
+  }finally {
+      setLoading(false) // re-enable when done
+    }
 };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-light p-4">
-      <Card className="w-full max-w-md shadow-xl">
-        <CardHeader className="text-center space-y-4">
-          <div className="mx-auto w-16 h-16 bg-gradient-primary rounded-2xl flex items-center justify-center">
-            <Mail className="w-8 h-8 text-primary-foreground" />
-          </div>
-          <CardTitle className="text-2xl font-bold text-primary">Forgot Password</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="Enter your registered email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                className="h-11"
-              />
-            </div>
-            <Button type="submit" className="w-full h-11">
-              Send Otp
-            </Button>
-            <p className="text-sm text-center mt-2">
-              Remember your password?{" "}
-              <Link to="/login" className="text-primary hover:underline">
-                Back to Login
-              </Link>
-            </p>
-          </form>
-        </CardContent>
-      </Card>
+<div className="min-h-screen flex items-center justify-center bg-gradient-light p-4">
+  <Card className="w-full max-w-md shadow-xl">
+    
+    {/* Logo Section */}
+    <div className="flex justify-center mt-6">
+      <img
+        src={IMAGES.logo}
+        alt="Retail Logo"
+        className="w-24 h-auto rounded-full object-contain"
+      />
     </div>
+
+    <CardHeader className="text-center space-y-4">
+    
+      <CardTitle className="text-2xl font-bold text-primary">
+        Forgot Password
+      </CardTitle>
+    </CardHeader>
+
+    <CardContent>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="space-y-2">
+          <Label htmlFor="email">Email</Label>
+          <Input
+            id="email"
+            type="email"
+            placeholder="Enter your registered email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            className="h-11"
+          />
+        </div>
+        <Button type="submit" className="w-full h-11" disabled={loading}>
+          {loading ? "Sending..." : "Send OTP"}
+        </Button>
+        <p className="text-sm text-center mt-2">
+          Remember your password?{" "}
+          <Link to="/login" className="text-primary hover:underline">
+            Back to Login
+          </Link>
+        </p>
+      </form>
+    </CardContent>
+  </Card>
+</div>
+
   );
 };

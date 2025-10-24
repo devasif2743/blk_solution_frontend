@@ -14,6 +14,7 @@ import StockManagement from "@/pages/StockManagement";
 import LocationFetcher from "@/pages/LocationFetcher";
 import RouteMap from "@/pages/RouteMap";
 import TerritoryPage from "@/pages/TerritoryPage";
+import AddTerritory from "@/pages/AddTerritory";
 import BdeManager from "@/pages/BdeManager";
 import CategoryManager from "@/pages/CategoryManager";
 import BrandManager from "@/pages/BrandManager";
@@ -110,7 +111,6 @@ const App = () => (
             }
           />
 
-
             <Route
               path="/products"
               element={
@@ -143,8 +143,6 @@ const App = () => (
                 </ProtectedRoute>
               }
             />
-
-            
 
              <Route
               path="/vendor-managment"
@@ -190,8 +188,6 @@ const App = () => (
               }
             />
 
-
-
              <Route
               path="/add-locality"
               element={
@@ -202,7 +198,6 @@ const App = () => (
                 </ProtectedRoute>
               }
             />
-
 
             <Route
               path="/routemap"
@@ -226,6 +221,16 @@ const App = () => (
               }
             />
 
+             <Route
+              path="/add-territory-new"
+              element={
+                <ProtectedRoute>
+                  <DashboardLayout>
+                    <AddTerritory />
+                  </DashboardLayout>
+                </ProtectedRoute>
+              }
+            />
 
               <Route
               path="/add-bdes"
@@ -237,7 +242,6 @@ const App = () => (
                 </ProtectedRoute>
               }
             />
-
 
              <Route
               path="/add-shop"
@@ -617,7 +621,6 @@ const App = () => (
             />
            {/* ---------- end REVISIT routes ---------- */}
 
-
             {/* ---------- start MANAGEMENT routes ---------- */}
             <Route
               path="Management/AssetsManagement"
@@ -728,4 +731,3 @@ const App = () => (
 );
 
 export default App;
-
